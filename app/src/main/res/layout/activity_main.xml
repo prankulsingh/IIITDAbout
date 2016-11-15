@@ -34,27 +34,15 @@
         android:textAlignment="center"
         android:textSize="24sp" />
 
-    <TextView
-        android:text="How many characters should be read?"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView3"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-        android:layout_below="@+id/textView2"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="60dp"
-        android:layout_toStartOf="@+id/picker"
-        android:layout_marginRight="16dp" />
-
     <EditText
         android:layout_height="wrap_content"
         android:id="@+id/picker"
-        android:layout_alignTop="@+id/textView3"
         android:layout_alignParentEnd="true"
         android:layout_alignBottom="@+id/textView3"
         android:layout_width="75dp"
         android:text="500"
-        android:inputType="number" />
+        android:inputType="number"
+        android:textAlignment="center" />
 
     <AutoCompleteTextView
         android:layout_width="wrap_content"
@@ -78,5 +66,16 @@
         android:textAlignment="center"
         android:textSize="24sp"
         android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:text="How many characters should be read?"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView3"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        android:layout_marginRight="16dp"
+        android:layout_above="@+id/button"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/picker" />
 
 </RelativeLayout>

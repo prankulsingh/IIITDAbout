@@ -5,7 +5,6 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -16,14 +15,11 @@ import android.widget.Toast;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -61,7 +57,14 @@ public class DisplayActivity extends AppCompatActivity {
             {
                 resultView.setText(resultData);
                 getSupportActionBar().setTitle(savedInstanceState.getString("TITLE"));
-                pb.setVisibility(View.INVISIBLE);
+                if(savedInstanceState.getBoolean("PB"))
+                {
+                    pb.setVisibility(View.VISIBLE);
+                }
+                else
+                {
+                    pb.setVisibility(View.INVISIBLE);
+                }
             }
         }
         else
@@ -70,15 +73,16 @@ public class DisplayActivity extends AppCompatActivity {
             len = getIntent().getIntExtra("LEN",500);
             stringUrl = getIntent().getStringExtra("URL");
 
-            ConnectivityManager connMgr = (ConnectivityManager) getSystemService(getApplicationContext().CONNECTIVITY_SERVICE);
-            NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-            if (networkInfo != null && networkInfo.isConnected())
+            ConnectivityManager connectionMngr = (ConnectivityManager) getSystemService(getApplicationContext().CONNECTIVITY_SERVICE);
+            NetworkInfo netInfo = connectionMngr.getActiveNetworkInfo();
+            if (netInfo != null && netInfo.isConnected())
             {
-                new DownloadWebpageTask().execute(stringUrl);
+                new asinktask().execute(stringUrl);
                 Toast.makeText(getApplicationContext(),"Getting data...",Toast.LENGTH_SHORT).show();
             }
             else
             {
+                pb.setVisibility(View.INVISIBLE);
                 Toast.makeText(getApplicationContext(),"Phone is not connected to internet. Kindly switch on WIFI or mobile data", Toast.LENGTH_LONG).show();
             }
         }
@@ -92,9 +96,17 @@ public class DisplayActivity extends AppCompatActivity {
         outState.putBoolean("ROTATE",true);
         outState.putString("RESULT", resultView.getText().toString());
         outState.putString("TITLE",toolbar.getTitle().toString());
+        if(pb.getVisibility()==View.VISIBLE)
+        {
+            outState.putBoolean("PB",true);
+        }
+        else
+        {
+            outState.putBoolean("PB",false);
+        }
     }
 
-    private class DownloadWebpageTask extends AsyncTask<String, Void, String>
+    private class asinktask extends AsyncTask<String, Void, String>
     {
         Document d;
         @Override
@@ -106,19 +118,15 @@ public class DisplayActivity extends AppCompatActivity {
                 try
                 {
                     URL url = new URL(urls[0]);
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                    conn.setReadTimeout(10000);
-                    conn.setConnectTimeout(15000);
-                    conn.setRequestMethod("GET");
-                    conn.setDoInput(true);
+                    HttpURLConnection connect = (HttpURLConnection) url.openConnection();
+                    connect.setReadTimeout(10000);
+                    connect.setConnectTimeout(15000);
+                    connect.setRequestMethod("GET");
+                    connect.setDoInput(true);
 
-                    conn.connect();
-                    int response = conn.getResponseCode();
-                    Log.d("DEBUG", "The response is: " + response);
-                    is = conn.getInputStream();
-
-                    //size of string
-                    //int length = is.available();
+                    connect.connect();
+                    int response = connect.getResponseCode();
+                    is = connect.getInputStream();
 
                     String contentAsString = readIt(is);
 
