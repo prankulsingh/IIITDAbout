@@ -32,6 +32,7 @@ public class DisplayActivity extends AppCompatActivity {
     Toolbar toolbar;
     ProgressBar pb;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

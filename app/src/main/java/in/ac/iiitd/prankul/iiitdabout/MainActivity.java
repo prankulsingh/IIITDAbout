@@ -13,7 +13,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.Toast;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
